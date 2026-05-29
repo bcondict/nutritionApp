@@ -125,7 +125,7 @@ public class LoginView extends JFrame {
             System.out.println(user.getName());
             dispose();
 
-            MainWindow mw = new MainWindow();
+            MainView mw = new MainView(user.getId());
             mw.setVisible(true);
         }
         else {
