@@ -10,15 +10,6 @@ public class FoodItemDietaryTag {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Constructor vacío
-    public FoodItemDietaryTag() {
-    }
-
-    // Constructor con parámetros principales
-    public FoodItemDietaryTag(UUID foodItemId, UUID dietaryPreferenceId) {
-        this.foodItemId = foodItemId;
-        this.dietaryPreferenceId = dietaryPreferenceId;
-    }
 
     // Constructor completo
     public FoodItemDietaryTag(

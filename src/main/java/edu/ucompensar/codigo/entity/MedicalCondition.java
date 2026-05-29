@@ -11,16 +11,6 @@ public class MedicalCondition {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Constructor vacío
-    public MedicalCondition() {
-    }
-
-    // Constructor con parámetros principales
-    public MedicalCondition(String code, String label, String description) {
-        this.code = code;
-        this.label = label;
-        this.description = description;
-    }
 
     // Constructor completo
     public MedicalCondition(

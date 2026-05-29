@@ -13,16 +13,6 @@ public class RecipeIngredient {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Constructor vacío
-    public RecipeIngredient() {
-    }
-
-    // Constructor con parámetros principales
-    public RecipeIngredient(UUID recipeId, UUID foodItemId, BigDecimal quantityG) {
-        this.recipeId = recipeId;
-        this.foodItemId = foodItemId;
-        this.quantityG = quantityG;
-    }
 
     // Constructor completo
     public RecipeIngredient(

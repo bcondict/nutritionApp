@@ -1,8 +1,11 @@
 package edu.ucompensar.codigo.ui;
 
+import edu.ucompensar.codigo.entity.FoodItem;
 import edu.ucompensar.codigo.entity.NutritionPlan;
 import edu.ucompensar.codigo.entity.Recipe;
+import edu.ucompensar.codigo.model.enums.FoodCategory;
 import edu.ucompensar.codigo.model.enums.MealType;
+import edu.ucompensar.codigo.service.FoodItemService;
 import edu.ucompensar.codigo.service.RecipeService;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -16,6 +19,7 @@ public class DailyDietView extends JPanel {
     private final UUID userId;
     private NutritionPlan currentPlan;
     private RecipeService recipeService;
+    private FoodItemService foodItemService;
     
     private JLabel caloriesLabel;
     private JProgressBar caloriesProgress;
@@ -39,6 +43,7 @@ public class DailyDietView extends JPanel {
     public DailyDietView(UUID userId) {
         this.userId = userId;
         this.recipeService = new RecipeService();
+        this.foodItemService = new FoodItemService();
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
@@ -176,8 +181,50 @@ public class DailyDietView extends JPanel {
         // Aquí cargarías las comidas del día desde la base de datos
         // Por ahora es un ejemplo
         addSampleRecipes();
+
+        // List<FoodItem> breakfastItems = foodItemService.findByCategory("BREAKFAST");
+        // for (FoodItem item : breakfastItems) {
+        //     addFoodItemToMeal(breakfastPanel, item);
+        // }
+        
+        // List<FoodItem> lunchItems = foodItemService.findByCategory("LUNCH");
+        // for (FoodItem item : lunchItems) {
+        //     addFoodItemToMeal(lunchPanel, item);
+        // }
+        
+        // // List<FoodItem> dinnerItems = foodItemService.findByCategory(FoodCategory.);
+        // for (FoodItem item : dinnerItems) {
+        //     addFoodItemToMeal(dinnerPanel, item);
+        // }
+        
+        // List<FoodItem> snackItems = foodItemService.findByCategory(FoodCategory.SNACK);
+        // for (FoodItem item : snackItems) {
+        //     addFoodItemToMeal(snacksPanel, item);
+        // }
     }
     
+    // private void addFoodItemToMeal(JPanel mealPanel, FoodItem item) {
+    //     JPanel itemCard = new JPanel(new BorderLayout());
+    //     itemCard.setBorder(BorderFactory.createCompoundBorder(
+    //         BorderFactory.createLineBorder(Color.LIGHT_GRAY),
+    //         BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        
+    //     JLabel nameLabel = new JLabel(item.getName());
+    //     nameLabel.setFont(new Font("Arial", Font.BOLD, 12));
+    //     itemCard.add(nameLabel, BorderLayout.NORTH);
+        
+    //     JLabel caloriesLabel = new JLabel(item.getCaloriesPer100g() + " kcal/100g");
+    //     caloriesLabel.setFont(new Font("Arial", Font.PLAIN, 10));
+    //     itemCard.add(caloriesLabel, BorderLayout.CENTER);
+        
+    //     JButton addButton = new JButton("Agregar");
+    //     addButton.addActionListener(e -> addFoodItemToDailyLog(item));
+    //     itemCard.add(addButton, BorderLayout.EAST);
+        
+    //     mealPanel.add(itemCard);
+    //     mealPanel.revalidate();
+    //     mealPanel.repaint();
+    // }
     private void addSampleRecipes() {
         // Ejemplo de cómo agregar recetas
         List<Recipe> breakfastRecipes = recipeService.findByMealType(MealType.BREAKFAST);
@@ -190,7 +237,8 @@ public class DailyDietView extends JPanel {
         JPanel recipeCard = new JPanel(new BorderLayout());
         recipeCard.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(Color.LIGHT_GRAY),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+            BorderFactory.createEmptyBorder(5, 5, 5, 5))
+        );
         
         JLabel nameLabel = new JLabel(recipe.getName());
         nameLabel.setFont(new Font("Arial", Font.BOLD, 12));

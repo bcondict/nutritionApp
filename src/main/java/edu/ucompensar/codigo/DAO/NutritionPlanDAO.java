@@ -1,6 +1,7 @@
 package edu.ucompensar.codigo.DAO;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,18 +40,18 @@ public class NutritionPlanDAO implements INutritionPlanDAO {
                 nutritionPlan.setId(UUID.randomUUID());
             }
             // Establecer parámetros
-            statement.setObject(1, nutritionPlan.getId());
-            statement.setObject(2, nutritionPlan.getUserId());
-            statement.setObject(3, nutritionPlan.getGoalId());
+            statement.setString(1, nutritionPlan.getId().toString());
+            statement.setString(2, nutritionPlan.getUserId().toString());
+            statement.setString(3, nutritionPlan.getGoalId().toString());
             statement.setBigDecimal(4, nutritionPlan.getTargetCalories());
             statement.setBigDecimal(5, nutritionPlan.getTargetProteinPct());
             statement.setBigDecimal(6, nutritionPlan.getTargetCarbsPct());
             statement.setBigDecimal(7, nutritionPlan.getTargetFatPct());
-            statement.setTimestamp(8, nutritionPlan.getGeneratedAt());
+            statement.setTimestamp(8, Timestamp.valueOf(nutritionPlan.getGeneratedAt()));
             statement.setBoolean(9, nutritionPlan.isActive());
-            statement.setTimestamp(10, nutritionPlan.getCreatedAt());
-            statement.setTimestamp(11, nutritionPlan.getUpdatedAt());
-            
+            statement.setTimestamp(10, Timestamp.valueOf(nutritionPlan.getCreatedAt()));
+            statement.setTimestamp(11, Timestamp.valueOf(nutritionPlan.getUpdatedAt()));
+
             statement.executeUpdate();
             
         } catch (SQLException e) {
@@ -67,7 +68,7 @@ public class NutritionPlanDAO implements INutritionPlanDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -91,7 +92,7 @@ public class NutritionPlanDAO implements INutritionPlanDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -153,16 +154,16 @@ public class NutritionPlanDAO implements INutritionPlanDAO {
         ) {
 
             // Establecer parámetros
-            statement.setObject(1, nutritionPlan.getUserId());
-            statement.setObject(2, nutritionPlan.getGoalId());
+            statement.setString(1, nutritionPlan.getUserId().toString());
+            statement.setString(2, nutritionPlan.getGoalId().toString());
             statement.setBigDecimal(3, nutritionPlan.getTargetCalories());
             statement.setBigDecimal(4, nutritionPlan.getTargetProteinPct());
             statement.setBigDecimal(5, nutritionPlan.getTargetCarbsPct());
             statement.setBigDecimal(6, nutritionPlan.getTargetFatPct());
-            statement.setTimestamp(7, nutritionPlan.getGeneratedAt());
+            statement.setTimestamp(7, Timestamp.valueOf(nutritionPlan.getGeneratedAt()));
             statement.setBoolean(8, nutritionPlan.isActive());
-            statement.setTimestamp(9, new Timestamp(System.currentTimeMillis())); // Actualizar timestamp
-            statement.setObject(10, nutritionPlan.getId());
+            statement.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now())); // Actualizar timestamp
+            statement.setString(10, nutritionPlan.getId().toString());
 
             int rowsAffected = statement.executeUpdate();
 
@@ -197,19 +198,20 @@ public class NutritionPlanDAO implements INutritionPlanDAO {
 
     // Método auxiliar para mapear ResultSet a objeto NutritionPlan
     private NutritionPlan mapResultSetToNutritionPlan(ResultSet rs) throws SQLException {
-        NutritionPlan plan = new NutritionPlan();
+        NutritionPlan plan = new NutritionPlan(
+            UUID.fromString(rs.getString("id")),
+            UUID.fromString(rs.getString("user_id")),
+            UUID.fromString(rs.getString("goal_id")),
+            rs.getBigDecimal("target_calories"),
+            rs.getBigDecimal("target_protein_pct"),
+            rs.getBigDecimal("target_carbs_pct"),
+            rs.getBigDecimal("target_fat_pct"),
+            rs.getTimestamp("generated_at").toLocalDateTime(),
+            rs.getBoolean("is_active"),
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at").toLocalDateTime()
+        );
 
-        plan.setId((UUID) rs.getObject("id"));
-        plan.setUserId((UUID) rs.getObject("user_id"));
-        plan.setGoalId((UUID) rs.getObject("goal_id"));
-        plan.setTargetCalories(rs.getBigDecimal("target_calories"));
-        plan.setTargetProteinPct(rs.getBigDecimal("target_protein_pct"));
-        plan.setTargetCarbsPct(rs.getBigDecimal("target_carbs_pct"));
-        plan.setTargetFatPct(rs.getBigDecimal("target_fat_pct"));
-        plan.setGeneratedAt(rs.getTimestamp("generated_at"));
-        plan.setActive(rs.getBoolean("is_active"));
-        plan.setCreatedAt(rs.getTimestamp("created_at"));
-        plan.setUpdatedAt(rs.getTimestamp("updated_at"));
 
         return plan;
     }
@@ -248,7 +250,7 @@ public class NutritionPlanDAO implements INutritionPlanDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, goalId);
+            statement.setString(1, goalId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -272,8 +274,8 @@ public class NutritionPlanDAO implements INutritionPlanDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
-            statement.setObject(2, userId);
+            statement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            statement.setString(2, userId.toString());
             
             statement.executeUpdate();
             
@@ -289,7 +291,7 @@ public class NutritionPlanDAO implements INutritionPlanDAO {
         }
         
         // Establecer timestamps si son null
-        Timestamp now = new Timestamp(System.currentTimeMillis());
+        LocalDateTime now = LocalDateTime.now();
         if (nutritionPlan.getCreatedAt() == null) {
             nutritionPlan.setCreatedAt(now);
         }
@@ -312,7 +314,7 @@ public class NutritionPlanDAO implements INutritionPlanDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {

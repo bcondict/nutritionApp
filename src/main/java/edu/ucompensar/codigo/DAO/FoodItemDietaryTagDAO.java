@@ -41,9 +41,9 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
                 foodItemDietaryTag.setUpdatedAt(now);
             }
             
-            statement.setObject(1, foodItemDietaryTag.getId());
-            statement.setObject(2, foodItemDietaryTag.getFoodItemId());
-            statement.setObject(3, foodItemDietaryTag.getDietaryPreferenceId());
+            statement.setString(1, foodItemDietaryTag.getId().toString());
+            statement.setString(2, foodItemDietaryTag.getFoodItemId().toString());
+            statement.setString(3, foodItemDietaryTag.getDietaryPreferenceId().toString());
             statement.setObject(4, foodItemDietaryTag.getCreatedAt());
             statement.setObject(5, foodItemDietaryTag.getUpdatedAt());
             
@@ -63,7 +63,7 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -115,10 +115,10 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemDietaryTag.getFoodItemId());
-            statement.setObject(2, foodItemDietaryTag.getDietaryPreferenceId());
+            statement.setString(1, foodItemDietaryTag.getFoodItemId().toString());
+            statement.setString(2, foodItemDietaryTag.getDietaryPreferenceId().toString());
             statement.setObject(3, LocalDateTime.now());
-            statement.setObject(4, foodItemDietaryTag.getId());
+            statement.setString(4, foodItemDietaryTag.getId().toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -143,7 +143,7 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -166,7 +166,7 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
+            statement.setString(1, foodItemId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -196,7 +196,7 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
+            statement.setString(1, foodItemId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -223,11 +223,11 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
+            statement.setString(1, foodItemId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
-                    preferenceIds.add((UUID) rs.getObject("dietary_preference_id"));
+                    preferenceIds.add(UUID.fromString(rs.getString("dietary_preference_id")));
                 }
             }
             
@@ -310,7 +310,7 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
-                    foodItemIds.add((UUID) rs.getObject("food_item_id"));
+                    foodItemIds.add(UUID.fromString(rs.getString("food_item_id")));
                 }
             }
             
@@ -330,8 +330,8 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
-            statement.setObject(2, dietaryPreferenceId);
+            statement.setString(1, foodItemId.toString());
+            statement.setString(2, dietaryPreferenceId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -355,8 +355,8 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
-            statement.setObject(2, dietaryPreferenceId);
+            statement.setString(1, foodItemId.toString());
+            statement.setString(2, dietaryPreferenceId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -441,7 +441,7 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
+            statement.setString(1, foodItemId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -465,7 +465,7 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, dietaryPreferenceId);
+            statement.setString(1, dietaryPreferenceId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -553,7 +553,7 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
+            statement.setString(1, foodItemId.toString());
             
             int deletedCount = statement.executeUpdate();
             System.out.println("Tags eliminados para foodItem " + foodItemId + ": " + deletedCount);
@@ -572,7 +572,7 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, dietaryPreferenceId);
+            statement.setString(1, dietaryPreferenceId.toString());
             
             int deletedCount = statement.executeUpdate();
             System.out.println("Tags eliminados para dietaryPreference " + dietaryPreferenceId + ": " + deletedCount);
@@ -591,8 +591,8 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
-            statement.setObject(2, dietaryPreferenceId);
+            statement.setString(1, foodItemId.toString());
+            statement.setString(2, dietaryPreferenceId.toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -671,11 +671,11 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
                     tag.setUpdatedAt(now);
                 }
                 
-                statement.setObject(1, tag.getId());
-                statement.setObject(2, tag.getFoodItemId());
-                statement.setObject(3, tag.getDietaryPreferenceId());
-                statement.setObject(4, tag.getCreatedAt());
-                statement.setObject(5, tag.getUpdatedAt());
+                statement.setString(1, tag.getId().toString());
+                statement.setString(2, tag.getFoodItemId().toString());
+                statement.setString(3, tag.getDietaryPreferenceId().toString());
+                statement.setTimestamp(4, Timestamp.valueOf(tag.getCreatedAt()));
+                statement.setTimestamp(5, Timestamp.valueOf(tag.getUpdatedAt()));
                 
                 statement.addBatch();
             }
@@ -787,7 +787,7 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
+            statement.setString(1, foodItemId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -806,9 +806,9 @@ public class FoodItemDietaryTagDAO implements IFoodItemDietaryTagDAO {
     private FoodItemDietaryTag mapResultSetToFoodItemDietaryTag(ResultSet rs) throws SQLException {
         FoodItemDietaryTag tag = new FoodItemDietaryTag();
         
-        tag.setId((UUID) rs.getObject("id"));
-        tag.setFoodItemId((UUID) rs.getObject("food_item_id"));
-        tag.setDietaryPreferenceId((UUID) rs.getObject("dietary_preference_id"));
+        tag.setId(UUID.fromString(rs.getString("id")));
+        tag.setFoodItemId(UUID.fromString(rs.getString("food_item_id")));
+        tag.setDietaryPreferenceId(UUID.fromString(rs.getString("dietary_preference_id")));
         
         Timestamp createdAt = rs.getTimestamp("created_at");
         if (createdAt != null) {

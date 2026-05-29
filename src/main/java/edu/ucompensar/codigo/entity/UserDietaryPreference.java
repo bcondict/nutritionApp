@@ -10,15 +10,6 @@ public class UserDietaryPreference {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Constructor vacío
-    public UserDietaryPreference() {
-    }
-
-    // Constructor con parámetros principales
-    public UserDietaryPreference(UUID userId, UUID dietaryPreferenceId) {
-        this.userId = userId;
-        this.dietaryPreferenceId = dietaryPreferenceId;
-    }
 
     // Constructor completo
     public UserDietaryPreference(

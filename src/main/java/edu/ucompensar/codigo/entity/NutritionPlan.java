@@ -1,7 +1,7 @@
 package edu.ucompensar.codigo.entity;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class NutritionPlan {
@@ -12,33 +12,11 @@ public class NutritionPlan {
     private BigDecimal targetProteinPct;
     private BigDecimal targetCarbsPct;
     private BigDecimal targetFatPct;
-    private Timestamp generatedAt;
+    private LocalDateTime generatedAt;
     private boolean isActive;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    // Constructor vacío (requerido por frameworks como Spring, Hibernate)
-    public NutritionPlan() {
-    }
-
-    // Constructor con parámetros principales (sin campos autogenerados)
-    public NutritionPlan(
-        UUID userId,
-        UUID goalId,
-        BigDecimal targetCalories,
-        BigDecimal targetProteinPct,
-        BigDecimal targetCarbsPct, 
-        BigDecimal targetFatPct,
-        boolean isActive
-    ) {
-        this.userId = userId;
-        this.goalId = goalId;
-        this.targetCalories = targetCalories;
-        this.targetProteinPct = targetProteinPct;
-        this.targetCarbsPct = targetCarbsPct;
-        this.targetFatPct = targetFatPct;
-        this.isActive = isActive;
-    }
 
     // Constructor completo
     public NutritionPlan(
@@ -49,10 +27,10 @@ public class NutritionPlan {
         BigDecimal targetProteinPct,
         BigDecimal targetCarbsPct,
         BigDecimal targetFatPct,
-        Timestamp generatedAt,
+        LocalDateTime generatedAt,
         boolean isActive,
-        Timestamp createdAt,
-        Timestamp updatedAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
     ) {
         this.id = id;
         this.userId = userId;
@@ -124,11 +102,11 @@ public class NutritionPlan {
         this.targetFatPct = targetFatPct;
     }
 
-    public Timestamp getGeneratedAt() {
+    public LocalDateTime getGeneratedAt() {
         return generatedAt;
     }
 
-    public void setGeneratedAt(Timestamp generatedAt) {
+    public void setGeneratedAt(LocalDateTime generatedAt) {
         this.generatedAt = generatedAt;
     }
 
@@ -140,19 +118,19 @@ public class NutritionPlan {
         isActive = active;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 

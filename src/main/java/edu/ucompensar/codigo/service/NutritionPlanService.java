@@ -157,9 +157,11 @@ package edu.ucompensar.codigo.service;
 // }
 
 import edu.ucompensar.codigo.DAO.NutritionPlanDAO;
+import edu.ucompensar.codigo.entity.Goal;
 import edu.ucompensar.codigo.entity.NutritionPlan;
 import edu.ucompensar.codigo.entity.UserProfile;
 import edu.ucompensar.codigo.model.enums.ActivityLevel;
+import edu.ucompensar.codigo.model.enums.GoalStatus;
 import edu.ucompensar.codigo.model.enums.GoalType;
 import edu.ucompensar.codigo.model.enums.Sex;
 import edu.ucompensar.codigo.model.interfaces.INutritionPlanDAO;
@@ -199,25 +201,31 @@ public class NutritionPlanService {
         return plan != null && plan.isActive();
     }
 
-    public NutritionPlan createPlanForUser(UUID userId, String goalTypeCode) {
+    public NutritionPlan createPlanForUser(UUID userId, Goal goal) {
         UserProfile profile = profileService.getLatestProfile(userId);
         if (profile == null) {
             throw new IllegalStateException("Debes completar tu perfil primero");
         }
 
-        GoalType goalType = GoalType.valueOf(goalTypeCode);
         BigDecimal maintenanceCalories = calculateMaintenanceCalories(profile);
-        BigDecimal targetCalories = adjustCaloriesForGoal(maintenanceCalories, goalType);
-        BigDecimal[] macros = calculateMacros(goalType, targetCalories);
+        BigDecimal targetCalories = adjustCaloriesForGoal(maintenanceCalories, goal.getType());
+        BigDecimal[] macros = calculateMacros(goal.getType(), targetCalories);
 
-        NutritionPlan plan = new NutritionPlan();
-        plan.setUserId(userId);
-        plan.setTargetCalories(targetCalories);
-        plan.setTargetProteinPct(macros[0]);
-        plan.setTargetCarbsPct(macros[1]);
-        plan.setTargetFatPct(macros[2]);
-        plan.setActive(true);
-        plan.setGeneratedAt(Timestamp.valueOf(LocalDateTime.now()));
+        LocalDateTime now = LocalDateTime.now();
+        UUID planId = UUID.randomUUID();
+        NutritionPlan plan = new NutritionPlan(
+            planId,
+            userId,
+            goal.getId(),
+            targetCalories,
+            macros[0],
+            macros[1],
+            macros[2],
+            now,
+            true,
+            now,
+            now
+        );
 
         // Desactivar plan anterior si existe
         NutritionPlan existing = findByUserId(userId);
@@ -225,7 +233,7 @@ public class NutritionPlanService {
             existing.setActive(false);
             update(existing);
         }
-        
+
         save(plan);
         return plan;
     }

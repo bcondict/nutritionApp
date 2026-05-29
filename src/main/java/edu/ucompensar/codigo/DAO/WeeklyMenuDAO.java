@@ -48,8 +48,8 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
                 weeklyMenu.setGeneratedAt(now);
             }
             
-            statement.setObject(1, weeklyMenu.getId());
-            statement.setObject(2, weeklyMenu.getNutritionPlanId());
+            statement.setString(1, weeklyMenu.getId().toString());
+            statement.setString(2, weeklyMenu.getNutritionPlanId().toString());
             statement.setObject(3, weeklyMenu.getWeekStart());
             statement.setObject(4, weeklyMenu.getWeekEnd());
             statement.setObject(5, weeklyMenu.getGeneratedAt());
@@ -72,7 +72,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -126,12 +126,12 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, weeklyMenu.getNutritionPlanId());
+            statement.setString(1, weeklyMenu.getNutritionPlanId().toString());
             statement.setObject(2, weeklyMenu.getWeekStart());
             statement.setObject(3, weeklyMenu.getWeekEnd());
             statement.setObject(4, weeklyMenu.getGeneratedAt());
             statement.setObject(5, LocalDateTime.now());
-            statement.setObject(6, weeklyMenu.getId());
+            statement.setString(6, weeklyMenu.getId().toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -156,7 +156,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -179,7 +179,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, nutritionPlanId);
+            statement.setString(1, nutritionPlanId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -204,7 +204,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, nutritionPlanId);
+            statement.setString(1, nutritionPlanId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -229,7 +229,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, nutritionPlanId);
+            statement.setString(1, nutritionPlanId.toString());
             statement.setObject(2, today);
             statement.setObject(3, today);
             
@@ -257,7 +257,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, nutritionPlanId);
+            statement.setString(1, nutritionPlanId.toString());
             statement.setObject(2, startDate);
             statement.setObject(3, endDate);
             
@@ -438,7 +438,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -462,7 +462,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, nutritionPlanId);
+            statement.setString(1, nutritionPlanId.toString());
             statement.setObject(2, weekStart);
             
             try (ResultSet rs = statement.executeQuery()) {
@@ -487,7 +487,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, nutritionPlanId);
+            statement.setString(1, nutritionPlanId.toString());
             statement.setObject(2, startDate);
             statement.setObject(3, endDate);
             
@@ -513,7 +513,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, nutritionPlanId);
+            statement.setString(1, nutritionPlanId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -537,7 +537,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, nutritionPlanId);
+            statement.setString(1, nutritionPlanId.toString());
             statement.setInt(2, year);
             
             try (ResultSet rs = statement.executeQuery()) {
@@ -562,7 +562,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, nutritionPlanId);
+            statement.setString(1, nutritionPlanId.toString());
             statement.executeUpdate();
             
         } catch (SQLException e) {
@@ -689,12 +689,17 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
         LocalDate weekEnd = weekStart.plusDays(6);
         
         // Crear el menú semanal
-        WeeklyMenu weeklyMenu = new WeeklyMenu();
-        weeklyMenu.setNutritionPlanId(nutritionPlanId);
-        weeklyMenu.setWeekStart(weekStart);
-        weeklyMenu.setWeekEnd(weekEnd);
-        weeklyMenu.setGeneratedAt(LocalDateTime.now());
-        
+        UUID id = UUID.randomUUID();
+        LocalDateTime now = LocalDateTime.now();
+        WeeklyMenu weeklyMenu = new WeeklyMenu(
+            id,
+            nutritionPlanId,
+            weekStart,
+            weekEnd,
+            now,
+            now,
+            now
+        );
         return weeklyMenu;
     }
     
@@ -736,7 +741,7 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, weeklyMenu.getNutritionPlanId());
+            statement.setString(1, weeklyMenu.getNutritionPlanId().toString());
             statement.setObject(2, weeklyMenu.getWeekStart());
             statement.setObject(3, weeklyMenu.getWeekEnd());
             statement.setObject(4, weeklyMenu.getWeekStart());
@@ -831,38 +836,16 @@ public class WeeklyMenuDAO implements IWeeklyMenuDAO {
     
     // Método auxiliar para mapear ResultSet a WeeklyMenu
     private WeeklyMenu mapResultSetToWeeklyMenu(ResultSet rs) throws SQLException {
-        WeeklyMenu menu = new WeeklyMenu();
-        
-        menu.setId((UUID) rs.getObject("id"));
-        menu.setNutritionPlanId((UUID) rs.getObject("nutrition_plan_id"));
-        
-        // Manejo de LocalDate
-        Date weekStart = rs.getDate("week_start");
-        if (weekStart != null) {
-            menu.setWeekStart(weekStart.toLocalDate());
-        }
-        
-        Date weekEnd = rs.getDate("week_end");
-        if (weekEnd != null) {
-            menu.setWeekEnd(weekEnd.toLocalDate());
-        }
-        
-        // Manejo de LocalDateTime
-        Timestamp generatedAt = rs.getTimestamp("generated_at");
-        if (generatedAt != null) {
-            menu.setGeneratedAt(generatedAt.toLocalDateTime());
-        }
-        
-        Timestamp createdAt = rs.getTimestamp("created_at");
-        if (createdAt != null) {
-            menu.setCreatedAt(createdAt.toLocalDateTime());
-        }
-        
-        Timestamp updatedAt = rs.getTimestamp("updated_at");
-        if (updatedAt != null) {
-            menu.setUpdatedAt(updatedAt.toLocalDateTime());
-        }
-        
+        WeeklyMenu menu = new WeeklyMenu(
+            UUID.fromString(rs.getString("id")),
+            UUID.fromString(rs.getString("nutrition_plan_id")),
+            rs.getDate("week_start").toLocalDate(),
+            rs.getDate("week_end").toLocalDate(),
+            rs.getTimestamp("generated_at").toLocalDateTime(),
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at").toLocalDateTime()
+        );
+
         return menu;
     }
 }

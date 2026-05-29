@@ -35,30 +35,6 @@ public class FoodItem {
     // public static final String CATEGORY_PROCESSED = "PROCESSED";
     // public static final String CATEGORY_OTHER = "OTHER";
 
-    // Constructor vacío
-    public FoodItem() {
-    }
-
-    // Constructor con parámetros principales
-    public FoodItem(
-        String name,
-        String category,
-        BigDecimal caloriesPer100g,
-        BigDecimal proteinPer100g,
-        BigDecimal carbsPer100g,
-        BigDecimal fatPer100g,
-        BigDecimal fiberPer100g,
-        BigDecimal sodiumPer100mg
-    ) {
-        this.name = name;
-        this.category = category;
-        this.caloriesPer100g = caloriesPer100g;
-        this.proteinPer100g = proteinPer100g;
-        this.carbsPer100g = carbsPer100g;
-        this.fatPer100g = fatPer100g;
-        this.fiberPer100g = fiberPer100g;
-        this.sodiumPer100mg = sodiumPer100mg;
-    }
 
     // Constructor completo
     public FoodItem(

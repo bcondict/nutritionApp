@@ -48,7 +48,7 @@ public class RecipeDAO implements IRecipeDAO {
                 recipe.setUpdatedAt(now);
             }
             
-            statement.setObject(1, recipe.getId());
+            statement.setString(1, recipe.getId().toString());
             statement.setString(2, recipe.getName());
             statement.setString(3, recipe.getDescription());
             statement.setString(4, recipe.getMealType().name());
@@ -74,7 +74,7 @@ public class RecipeDAO implements IRecipeDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -137,7 +137,7 @@ public class RecipeDAO implements IRecipeDAO {
             statement.setString(5, recipe.getDifficulty().name());
             statement.setInt(6, recipe.getServings());
             statement.setObject(7, LocalDateTime.now());
-            statement.setObject(8, recipe.getId());
+            statement.setString(8, recipe.getId().toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -162,7 +162,7 @@ public class RecipeDAO implements IRecipeDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -521,7 +521,7 @@ public class RecipeDAO implements IRecipeDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -927,26 +927,18 @@ public class RecipeDAO implements IRecipeDAO {
     
     // Método auxiliar para mapear ResultSet a Recipe
     private Recipe mapResultSetToRecipe(ResultSet rs) throws SQLException {
-        Recipe recipe = new Recipe();
-        
-        recipe.setId((UUID) rs.getObject("id"));
-        recipe.setName(rs.getString("name"));
-        recipe.setDescription(rs.getString("description"));
-        recipe.setMealType(MealType.valueOf(rs.getString("meal_type")));
-        recipe.setPrepTimeMinutes(rs.getInt("prep_time_minutes"));
-        recipe.setDifficulty(RecipeDifficulty.valueOf(rs.getString("difficulty")));
-        recipe.setServings(rs.getInt("servings"));
-        
-        Timestamp createdAt = rs.getTimestamp("created_at");
-        if (createdAt != null) {
-            recipe.setCreatedAt(createdAt.toLocalDateTime());
-        }
-        
-        Timestamp updatedAt = rs.getTimestamp("updated_at");
-        if (updatedAt != null) {
-            recipe.setUpdatedAt(updatedAt.toLocalDateTime());
-        }
-        
+        Recipe recipe = new Recipe(
+            UUID.fromString(rs.getString("id")),
+            rs.getString("name"),
+            rs.getString("description"),
+            MealType.valueOf(rs.getString("meal_type")),
+            rs.getInt("prep_time_minutes"),
+            RecipeDifficulty.valueOf(rs.getString("difficulty")),
+            rs.getInt("servings"),
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at").toLocalDateTime()
+        );
+
         return recipe;
     }
 }

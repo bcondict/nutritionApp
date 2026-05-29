@@ -1,5 +1,8 @@
 package edu.ucompensar.codigo.ui;
 
+import edu.ucompensar.codigo.entity.Goal;
+import edu.ucompensar.codigo.model.enums.GoalType;
+import edu.ucompensar.codigo.service.GoalService;
 import edu.ucompensar.codigo.service.NutritionPlanService;
 import javax.swing.*;
 import java.awt.*;
@@ -12,16 +15,18 @@ public class SelectGoalView extends JFrame {
     private JButton maintenanceBtn;
     
     private final UUID userId;
-    private final NutritionPlanService planService;
+    private final NutritionPlanService nutritionPlanService;
+    private final GoalService goalService;
 
     public SelectGoalView(UUID userId) {
         this.userId = userId;
-        this.planService = new NutritionPlanService();
+        this.nutritionPlanService = new NutritionPlanService();
+        this.goalService = new GoalService();
         
         setTitle("Selecciona tu objetivo");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setResizable(false);
+        // setResizable(false);
         
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
@@ -34,10 +39,10 @@ public class SelectGoalView extends JFrame {
         // Botones de objetivos
         JPanel goalsPanel = new JPanel(new GridLayout(2, 2, 15, 15));
         
-        weightLossBtn = createGoalButton("Pérdida de peso", "⚖️⬇️", "WEIGHT_LOSS");
-        weightGainBtn = createGoalButton("Ganancia de peso", "⚖️⬆️", "WEIGHT_GAIN");
-        muscleGainBtn = createGoalButton("Ganancia muscular", "💪", "MUSCLE_GAIN");
-        maintenanceBtn = createGoalButton("Mantenimiento", "🎯", "MAINTENANCE");
+        weightLossBtn = createGoalButton("Pérdida de peso", "⚖️⬇️", GoalType.LOSE_WEIGHT);
+        weightGainBtn = createGoalButton("Mejora de salud", "⚖️⬆️", GoalType.IMPROVE_HEALTH);
+        muscleGainBtn = createGoalButton("Ganancia muscular", "💪", GoalType.GAIN_MUSCLE);
+        maintenanceBtn = createGoalButton("Mantenimiento", "🎯", GoalType.MAINTAIN_WEIGHT);
         
         goalsPanel.add(weightLossBtn);
         goalsPanel.add(weightGainBtn);
@@ -50,18 +55,21 @@ public class SelectGoalView extends JFrame {
         pack();
     }
     
-    private JButton createGoalButton(String text, String icon, String goalType) {
-        JButton button = new JButton("<html><div style='text-align:center;padding:20px;'>" +
-                                     "<span style='font-size:32px;'>" + icon + "</span><br>" +
-                                     "<span style='font-size:14px;'>" + text + "</span></div></html>");
+    private JButton createGoalButton(String text, String icon, GoalType goalType) {
+        JButton button = new JButton(
+            "<html><div style='text-align:center;padding:20px;'>" +
+            "<span style='font-size:32px;'>" + icon + "</span><br>" +
+            "<span style='font-size:14px;'>" + text + "</span></div></html>"
+        );
         button.setPreferredSize(new Dimension(150, 120));
         button.addActionListener(e -> createPlan(goalType));
         return button;
     }
     
-    private void createPlan(String goalType) {
+    private void createPlan(GoalType goalType) {
         try {
-            planService.createPlanForUser(userId, goalType);
+            Goal goal = goalService.createGoal(userId, goalType);
+            nutritionPlanService.createPlanForUser(userId, goal);
             JOptionPane.showMessageDialog(this, "Plan nutricional creado exitosamente");
             
             dispose();

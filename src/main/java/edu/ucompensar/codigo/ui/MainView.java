@@ -7,7 +7,6 @@ import edu.ucompensar.codigo.service.UserProfileService;
 import edu.ucompensar.codigo.service.WeeklyMenuService;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.time.LocalDate;
 import java.util.UUID;
 

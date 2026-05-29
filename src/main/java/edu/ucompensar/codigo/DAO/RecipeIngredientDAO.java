@@ -43,9 +43,9 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
                 recipeIngredient.setUpdatedAt(now);
             }
             
-            statement.setObject(1, recipeIngredient.getId());
-            statement.setObject(2, recipeIngredient.getRecipeId());
-            statement.setObject(3, recipeIngredient.getFoodItemId());
+            statement.setString(1, recipeIngredient.getId().toString());
+            statement.setString(2, recipeIngredient.getRecipeId().toString());
+            statement.setString(3, recipeIngredient.getFoodItemId().toString());
             statement.setBigDecimal(4, recipeIngredient.getQuantityG());
             statement.setObject(5, recipeIngredient.getCreatedAt());
             statement.setObject(6, recipeIngredient.getUpdatedAt());
@@ -66,7 +66,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -119,11 +119,11 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, recipeIngredient.getRecipeId());
-            statement.setObject(2, recipeIngredient.getFoodItemId());
+            statement.setString(1, recipeIngredient.getRecipeId().toString());
+            statement.setString(2, recipeIngredient.getFoodItemId().toString());
             statement.setBigDecimal(3, recipeIngredient.getQuantityG());
             statement.setObject(4, LocalDateTime.now());
-            statement.setObject(5, recipeIngredient.getId());
+            statement.setString(5, recipeIngredient.getId().toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -148,7 +148,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -171,7 +171,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, recipeId);
+            statement.setString(1, recipeId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -209,7 +209,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, recipeId);
+            statement.setString(1, recipeId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -237,7 +237,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, recipeId);
+            statement.setString(1, recipeId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -262,7 +262,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
+            statement.setString(1, foodItemId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -287,7 +287,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
+            statement.setString(1, foodItemId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -311,8 +311,8 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, recipeId);
-            statement.setObject(2, foodItemId);
+            statement.setString(1, recipeId.toString());
+            statement.setString(2, foodItemId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -336,8 +336,8 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, recipeId);
-            statement.setObject(2, foodItemId);
+            statement.setString(1, recipeId.toString());
+            statement.setString(2, foodItemId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -361,7 +361,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, recipeId);
+            statement.setString(1, recipeId.toString());
             
             int deletedCount = statement.executeUpdate();
             System.out.println("Ingredientes eliminados para receta " + recipeId + ": " + deletedCount);
@@ -380,7 +380,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
+            statement.setString(1, foodItemId.toString());
             
             int deletedCount = statement.executeUpdate();
             System.out.println("Ingredientes eliminados para alimento " + foodItemId + ": " + deletedCount);
@@ -399,8 +399,8 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, recipeId);
-            statement.setObject(2, foodItemId);
+            statement.setString(1, recipeId.toString());
+            statement.setString(2, foodItemId.toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -424,7 +424,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, recipeId);
+            statement.setString(1, recipeId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -448,7 +448,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, foodItemId);
+            statement.setString(1, foodItemId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -472,7 +472,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, recipeId);
+            statement.setString(1, recipeId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -568,9 +568,9 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
                     ingredient.setUpdatedAt(now);
                 }
                 
-                statement.setObject(1, ingredient.getId());
-                statement.setObject(2, ingredient.getRecipeId());
-                statement.setObject(3, ingredient.getFoodItemId());
+                statement.setString(1, ingredient.getId().toString());
+                statement.setString(2, ingredient.getRecipeId().toString());
+                statement.setString(3, ingredient.getFoodItemId().toString());
                 statement.setBigDecimal(4, ingredient.getQuantityG());
                 statement.setObject(5, ingredient.getCreatedAt());
                 statement.setObject(6, ingredient.getUpdatedAt());
@@ -597,7 +597,7 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
         ) {
             statement.setBigDecimal(1, multiplier);
             statement.setObject(2, LocalDateTime.now());
-            statement.setObject(3, recipeId);
+            statement.setString(3, recipeId.toString());
             
             int updatedCount = statement.executeUpdate();
             System.out.println("Cantidades actualizadas para " + updatedCount + " ingredientes de la receta " + recipeId);
@@ -706,23 +706,15 @@ public class RecipeIngredientDAO implements IRecipeIngredientDAO {
     
     // Método auxiliar para mapear ResultSet a RecipeIngredient
     private RecipeIngredient mapResultSetToRecipeIngredient(ResultSet rs) throws SQLException {
-        RecipeIngredient ingredient = new RecipeIngredient();
-        
-        ingredient.setId((UUID) rs.getObject("id"));
-        ingredient.setRecipeId((UUID) rs.getObject("recipe_id"));
-        ingredient.setFoodItemId((UUID) rs.getObject("food_item_id"));
-        ingredient.setQuantityG(rs.getBigDecimal("quantity_g"));
-        
-        Timestamp createdAt = rs.getTimestamp("created_at");
-        if (createdAt != null) {
-            ingredient.setCreatedAt(createdAt.toLocalDateTime());
-        }
-        
-        Timestamp updatedAt = rs.getTimestamp("updated_at");
-        if (updatedAt != null) {
-            ingredient.setUpdatedAt(updatedAt.toLocalDateTime());
-        }
-        
+        RecipeIngredient ingredient = new RecipeIngredient(
+            UUID.fromString(rs.getString("id")),
+            UUID.fromString(rs.getString("recipe_id")),
+            UUID.fromString(rs.getString("food_item_id")),
+            rs.getBigDecimal("quantity_g"),
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at").toLocalDateTime()
+        );
+
         return ingredient;
     }
 }

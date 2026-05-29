@@ -49,8 +49,8 @@ public class UserProfileDAO implements IUserProfileDAO {
                 userProfile.setUpdatedAt(now);
             }
             
-            statement.setObject(1, userProfile.getId());
-            statement.setObject(2, userProfile.getUserId());
+            statement.setString(1, userProfile.getId().toString());
+            statement.setString(2, userProfile.getUserId().toString());
             statement.setBigDecimal(3, userProfile.getWeightKg());
             statement.setInt(4, userProfile.getHeightCm());
             statement.setString(5, userProfile.getSex().name());
@@ -75,7 +75,7 @@ public class UserProfileDAO implements IUserProfileDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -115,9 +115,17 @@ public class UserProfileDAO implements IUserProfileDAO {
     
     @Override
     public void update(UserProfile userProfile) {
-        String sql = "UPDATE user_profile SET user_id = ?, weight_kg = ?, height_cm = ?, " +
-                     "sex = ?, activity_level = ?, measured_at = ?, updated_at = ? " +
-                     "WHERE id = ?";
+        String sql = """
+            UPDATE user_profile
+            SET user_id = ?,
+                weight_kg = ?,
+                height_cm = ?,
+                sex = ?,
+                activity_level = ?,
+                measured_at = ?,
+                updated_at = ?
+            WHERE id = ?
+        """;
         
         DatabaseConnection.getInstance();
         try (
@@ -125,14 +133,14 @@ public class UserProfileDAO implements IUserProfileDAO {
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
             
-            statement.setObject(1, userProfile.getUserId());
+            statement.setString(1, userProfile.getUserId().toString());
             statement.setBigDecimal(2, userProfile.getWeightKg());
             statement.setInt(3, userProfile.getHeightCm());
             statement.setString(4, userProfile.getSex().name());
             statement.setString(5, userProfile.getActivityLevel().name());
             statement.setObject(6, userProfile.getMeasuredAt());
             statement.setObject(7, LocalDateTime.now()); // Actualizar timestamp
-            statement.setObject(8, userProfile.getId());
+            statement.setString(8, userProfile.getId().toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -157,7 +165,7 @@ public class UserProfileDAO implements IUserProfileDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -179,7 +187,7 @@ public class UserProfileDAO implements IUserProfileDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -204,7 +212,7 @@ public class UserProfileDAO implements IUserProfileDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -229,7 +237,7 @@ public class UserProfileDAO implements IUserProfileDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.setObject(2, startDate);
             statement.setObject(3, endDate);
             
@@ -255,7 +263,7 @@ public class UserProfileDAO implements IUserProfileDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -279,7 +287,7 @@ public class UserProfileDAO implements IUserProfileDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -303,7 +311,7 @@ public class UserProfileDAO implements IUserProfileDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.executeUpdate();
             
         } catch (SQLException e) {
@@ -379,31 +387,18 @@ public class UserProfileDAO implements IUserProfileDAO {
 
     // Método auxiliar para mapear ResultSet a UserProfile
     private UserProfile mapResultSetToUserProfile(ResultSet rs) throws SQLException {
-        UserProfile profile = new UserProfile();
-        
-        profile.setId((UUID) rs.getObject("id"));
-        profile.setUserId((UUID) rs.getObject("user_id"));
-        profile.setWeightKg(rs.getBigDecimal("weight_kg"));
-        profile.setHeightCm(rs.getInt("height_cm"));
-        profile.setSex(Sex.valueOf(rs.getString("sex")));
-        profile.setActivityLevel(ActivityLevel.valueOf(rs.getString("activity_level")));
-        
-        // Manejo de LocalDateTime
-        Timestamp measuredAt = rs.getTimestamp("measured_at");
-        if (measuredAt != null) {
-            profile.setMeasuredAt(measuredAt.toLocalDateTime());
-        }
-        
-        Timestamp createdAt = rs.getTimestamp("created_at");
-        if (createdAt != null) {
-            profile.setCreatedAt(createdAt.toLocalDateTime());
-        }
-        
-        Timestamp updatedAt = rs.getTimestamp("updated_at");
-        if (updatedAt != null) {
-            profile.setUpdatedAt(updatedAt.toLocalDateTime());
-        }
-        
+        UserProfile profile = new UserProfile(
+            UUID.fromString(rs.getString("id")),
+            UUID.fromString(rs.getString("user_id")),
+            rs.getBigDecimal("weight_kg"),
+            rs.getInt("height_cm"),
+            Sex.valueOf(rs.getString("sex")),
+            ActivityLevel.valueOf(rs.getString("activity_level")),
+            rs.getTimestamp("measured_at").toLocalDateTime(),
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at").toLocalDateTime()
+        );
+
         return profile;
     }
 }

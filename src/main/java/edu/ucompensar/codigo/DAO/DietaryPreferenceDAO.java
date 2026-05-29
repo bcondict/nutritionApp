@@ -45,7 +45,7 @@ public class DietaryPreferenceDAO implements IDietaryPreferenceDAO {
                 dietaryPreference.setUpdatedAt(now);
             }
             
-            statement.setObject(1, dietaryPreference.getId());
+            statement.setString(1, dietaryPreference.getId().toString());
             statement.setString(2, dietaryPreference.getCode().name());
             statement.setString(3, dietaryPreference.getLabel());
             statement.setString(4, dietaryPreference.getCategory().name());
@@ -69,7 +69,7 @@ public class DietaryPreferenceDAO implements IDietaryPreferenceDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -128,7 +128,7 @@ public class DietaryPreferenceDAO implements IDietaryPreferenceDAO {
             statement.setString(3, dietaryPreference.getCategory().name());
             statement.setString(4, dietaryPreference.getDescription());
             statement.setObject(5, LocalDateTime.now());
-            statement.setObject(6, dietaryPreference.getId());
+            statement.setString(6, dietaryPreference.getId().toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -153,7 +153,7 @@ public class DietaryPreferenceDAO implements IDietaryPreferenceDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -415,7 +415,7 @@ public class DietaryPreferenceDAO implements IDietaryPreferenceDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -768,24 +768,19 @@ public class DietaryPreferenceDAO implements IDietaryPreferenceDAO {
     
     // Método auxiliar para mapear ResultSet a DietaryPreference
     private DietaryPreference mapResultSetToDietaryPreference(ResultSet rs) throws SQLException {
-        DietaryPreference preference = new DietaryPreference();
-        
-        preference.setId((UUID) rs.getObject("id"));
-        preference.setCode(DietaryPreferenceCode.valueOf(rs.getString("code")));
-        preference.setLabel(rs.getString("label"));
-        preference.setCategory(DietaryPreferenceCategory.valueOf(rs.getString("category")));
-        preference.setDescription(rs.getString("description"));
-        
-        Timestamp createdAt = rs.getTimestamp("created_at");
-        if (createdAt != null) {
-            preference.setCreatedAt(createdAt.toLocalDateTime());
-        }
-        
-        Timestamp updatedAt = rs.getTimestamp("updated_at");
-        if (updatedAt != null) {
-            preference.setUpdatedAt(updatedAt.toLocalDateTime());
-        }
-        
+        UUID newId = UUID.fromString(rs.getString("id"));
+        LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+        LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
+        DietaryPreference preference = new DietaryPreference(
+            newId,
+            DietaryPreferenceCode.valueOf(rs.getString("code")),
+            rs.getString("label"),
+            DietaryPreferenceCategory.valueOf(rs.getString("category")),
+            rs.getString("description"),
+            createdAt,
+            updatedAt
+        );
+
         return preference;
     }
 }

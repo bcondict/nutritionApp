@@ -15,17 +15,6 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public User() {
-    }
-
-    // Constructor con parámetros principales (sin timestamps ni id autogenerado)
-    public User(String name, String lastname, String email, LocalDate birthday) {
-        this.name = name;
-        this.lastname = lastname;
-        this.email = email;
-        this.birthday = birthday;
-    }
-
     // Constructor completo (incluyendo timestamps)
     public User(UUID id, String name, String lastname, String email, String passwordHash, LocalDate birthday, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;

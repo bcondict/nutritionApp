@@ -54,12 +54,18 @@ public class WeeklyMenuService {
             LocalDate weekEnd = weekStart.plusDays(6);
             
             // Verificar si ya existe
-            if (weeklyMenuDAO.existsByNutritionPlanIdAndWeekStart(nutritionPlanId, weekStart)) {
-                WeeklyMenu menu = new WeeklyMenu();
-                menu.setNutritionPlanId(nutritionPlanId);
-                menu.setWeekStart(weekStart);
-                menu.setWeekEnd(weekEnd);
-                menu.setGeneratedAt(LocalDateTime.now());
+            if (!weeklyMenuDAO.existsByNutritionPlanIdAndWeekStart(nutritionPlanId, weekStart)) {
+                UUID id = UUID.randomUUID();
+                LocalDateTime now = LocalDateTime.now();
+                WeeklyMenu menu = new WeeklyMenu(
+                    id,
+                    nutritionPlanId,
+                    weekStart,
+                    weekEnd,
+                    LocalDateTime.now(),
+                    now,
+                    now
+                );
                 save(menu);
             }
             

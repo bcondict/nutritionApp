@@ -49,7 +49,7 @@ public class FoodItemDAO implements IFoodItemDAO {
                 foodItem.setUpdatedAt(now);
             }
             
-            statement.setObject(1, foodItem.getId());
+            statement.setString(1, foodItem.getId().toString());
             statement.setString(2, foodItem.getName());
             statement.setString(3, foodItem.getCategory());
             statement.setBigDecimal(4, foodItem.getCaloriesPer100g());
@@ -77,7 +77,7 @@ public class FoodItemDAO implements IFoodItemDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -135,7 +135,7 @@ public class FoodItemDAO implements IFoodItemDAO {
             statement.setBigDecimal(7, foodItem.getFiberPer100g());
             statement.setBigDecimal(8, foodItem.getSodiumPer100mg());
             statement.setObject(9, LocalDateTime.now());
-            statement.setObject(10, foodItem.getId());
+            statement.setString(10, foodItem.getId().toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -160,7 +160,7 @@ public class FoodItemDAO implements IFoodItemDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -535,7 +535,7 @@ public class FoodItemDAO implements IFoodItemDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -957,28 +957,20 @@ public class FoodItemDAO implements IFoodItemDAO {
     
     // Método auxiliar para mapear ResultSet a FoodItem
     private FoodItem mapResultSetToFoodItem(ResultSet rs) throws SQLException {
-        FoodItem foodItem = new FoodItem();
-        
-        foodItem.setId((UUID) rs.getObject("id"));
-        foodItem.setName(rs.getString("name"));
-        foodItem.setCategory(rs.getString("category"));
-        foodItem.setCaloriesPer100g(rs.getBigDecimal("calories_per_100g"));
-        foodItem.setProteinPer100g(rs.getBigDecimal("protein_per_100g"));
-        foodItem.setCarbsPer100g(rs.getBigDecimal("carbs_per_100g"));
-        foodItem.setFatPer100g(rs.getBigDecimal("fat_per_100g"));
-        foodItem.setFiberPer100g(rs.getBigDecimal("fiber_per_100g"));
-        foodItem.setSodiumPer100mg(rs.getBigDecimal("sodium_per_100mg"));
-        
-        Timestamp createdAt = rs.getTimestamp("created_at");
-        if (createdAt != null) {
-            foodItem.setCreatedAt(createdAt.toLocalDateTime());
-        }
-        
-        Timestamp updatedAt = rs.getTimestamp("updated_at");
-        if (updatedAt != null) {
-            foodItem.setUpdatedAt(updatedAt.toLocalDateTime());
-        }
-        
+        FoodItem foodItem = new FoodItem(
+            UUID.fromString(rs.getString("id")),
+            rs.getString("name"),
+            rs.getString("category"),
+            rs.getBigDecimal("calories_per_100g"),
+            rs.getBigDecimal("protein_per_100g"),
+            rs.getBigDecimal("carbs_per_100g"),
+            rs.getBigDecimal("fat_per_100g"),
+            rs.getBigDecimal("fiber_per_100g"),
+            rs.getBigDecimal("sodium_per_100mg"),
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at").toLocalDateTime()
+        );
+
         return foodItem;
     }
 }

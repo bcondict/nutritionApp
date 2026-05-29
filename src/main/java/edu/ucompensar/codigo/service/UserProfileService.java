@@ -46,13 +46,19 @@ public class UserProfileService {
         UserProfile existing = getLatestProfile(userId);
         
         if (existing == null) {
-            UserProfile newProfile = new UserProfile();
-            newProfile.setUserId(userId);
-            newProfile.setWeightKg(weightKg);
-            newProfile.setHeightCm(heightCm);
-            newProfile.setSex(sex);
-            newProfile.setActivityLevel(activityLevel);
-            newProfile.setMeasuredAt(measuredAt);
+            UUID id = UUID.randomUUID();
+            LocalDateTime now = LocalDateTime.now();
+            UserProfile newProfile = new UserProfile(
+                id,
+                userId,
+                weightKg,
+                heightCm,
+                sex,
+                activityLevel,
+                measuredAt,
+                now,
+                now
+            );
             save(newProfile);
         } else {
             existing.setWeightKg(weightKg);

@@ -16,19 +16,6 @@ public class Goal {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Constructor vacío
-    public Goal() {
-    }
-
-    // Constructor con parámetros principales
-    public Goal(UUID userId, GoalType type, GoalStatus status, LocalDateTime startedAt, LocalDateTime endedAt) {
-        this.userId = userId;
-        this.type = type;
-        this.status = status;
-        this.startedAt = startedAt;
-        this.endedAt = endedAt;
-    }
-
     // Constructor completo
     public Goal(
         UUID id,

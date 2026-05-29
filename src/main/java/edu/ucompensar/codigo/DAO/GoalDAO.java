@@ -38,8 +38,8 @@ public class GoalDAO implements IGoalDAO {
                 goal.setUpdatedAt(now);
             }
 
-            statement.setObject(1, goal.getId());
-            statement.setObject(2, goal.getUserId());
+            statement.setString(1, goal.getId().toString());
+            statement.setString(2, goal.getUserId().toString());
             statement.setString(3, goal.getType().name());
             statement.setString(4, goal.getStatus().name());
             statement.setObject(5, goal.getStartedAt());
@@ -63,7 +63,7 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -118,13 +118,13 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, goal.getUserId());
+            statement.setString(1, goal.getUserId().toString());
             statement.setString(2, goal.getType().name());
             statement.setString(3, goal.getStatus().name());
             statement.setObject(4, goal.getStartedAt());
             statement.setObject(5, goal.getEndedAt());
             statement.setObject(6, LocalDateTime.now());
-            statement.setObject(7, goal.getId());
+            statement.setString(7, goal.getId().toString());
 
             int rowsAffected = statement.executeUpdate();
 
@@ -149,7 +149,7 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
 
             int rowsAffected = statement.executeUpdate();
 
@@ -172,7 +172,7 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
 
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -197,7 +197,7 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.setString(2, status.name());
 
             try (ResultSet rs = statement.executeQuery()) {
@@ -223,7 +223,7 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.setString(2, type.name());
 
             try (ResultSet rs = statement.executeQuery()) {
@@ -259,7 +259,7 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.setObject(2, startDate);
             statement.setObject(3, endDate);
             
@@ -335,7 +335,7 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -359,7 +359,7 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.setString(2, GoalStatus.ACTIVE.name());
 
             try (ResultSet rs = statement.executeQuery()) {
@@ -384,7 +384,7 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -408,7 +408,7 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.setString(2, status.name());
 
             try (ResultSet rs = statement.executeQuery()) {
@@ -457,7 +457,7 @@ public class GoalDAO implements IGoalDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -679,33 +679,16 @@ public class GoalDAO implements IGoalDAO {
 
     // Método auxiliar para mapear ResultSet a Goal
     private Goal mapResultSetToGoal(ResultSet rs) throws SQLException {
-        Goal goal = new Goal();
-
-        goal.setId((UUID) rs.getObject("id"));
-        goal.setUserId((UUID) rs.getObject("user_id"));
-        goal.setType(GoalType.valueOf(rs.getString("type")));
-        goal.setStatus(GoalStatus.valueOf(rs.getString("status")));
-
-        // Manejo de LocalDateTime
-        Timestamp startedAt = rs.getTimestamp("started_at");
-        if (startedAt != null) {
-            goal.setStartedAt(startedAt.toLocalDateTime());
-        }
-
-        Timestamp endedAt = rs.getTimestamp("ended_at");
-        if (endedAt != null) {
-            goal.setEndedAt(endedAt.toLocalDateTime());
-        }
-
-        Timestamp createdAt = rs.getTimestamp("created_at");
-        if (createdAt != null) {
-            goal.setCreatedAt(createdAt.toLocalDateTime());
-        }
-
-        Timestamp updatedAt = rs.getTimestamp("updated_at");
-        if (updatedAt != null) {
-            goal.setUpdatedAt(updatedAt.toLocalDateTime());
-        }
+        Goal goal = new Goal(
+            UUID.fromString(rs.getString("id")),
+            UUID.fromString(rs.getString("user_id")),
+            GoalType.valueOf(rs.getString("type")),
+            GoalStatus.valueOf(rs.getString("status")),
+            rs.getTimestamp("started_at").toLocalDateTime(),
+            rs.getTimestamp("ended_at").toLocalDateTime(),
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at").toLocalDateTime()
+        );
 
         return goal;
     }

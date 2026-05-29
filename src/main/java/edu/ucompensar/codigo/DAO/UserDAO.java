@@ -72,16 +72,7 @@ public class UserDAO implements IUserDAO {
 
             if (rs.next()) {
 
-                User user = new User();
-
-                user.setId(UUID.fromString(rs.getString("id")));
-                user.setName(rs.getString("name"));
-                user.setLastname(rs.getString("lastname"));
-                user.setEmail(rs.getString("email"));
-                user.setBirthday(rs.getDate("birthday").toLocalDate());
-                user.setPasswordHash(rs.getString("password_hash"));
-                user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-                user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                User user = mapResultSetToUser(rs);
 
                 return user;
             }
@@ -108,16 +99,7 @@ public class UserDAO implements IUserDAO {
 
             while (rs.next()) {
 
-                User user = new User();
-
-                user.setId(UUID.fromString(rs.getString("id")));
-                user.setName(rs.getString("name"));
-                user.setLastname(rs.getString("lastname"));
-                user.setEmail(rs.getString("email"));
-                user.setBirthday(rs.getDate("birthday").toLocalDate());
-                user.setPasswordHash(rs.getString("password_hash"));
-                user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-                user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                User user = mapResultSetToUser(rs);
 
                 users.add(user);
             }
@@ -211,16 +193,7 @@ public class UserDAO implements IUserDAO {
 
             if (rs.next()) {
 
-                User user = new User();
-
-                user.setId(UUID.fromString(rs.getString("id")));
-                user.setName(rs.getString("name"));
-                user.setLastname(rs.getString("lastname"));
-                user.setEmail(rs.getString("email"));
-                user.setBirthday(rs.getDate("birthday").toLocalDate());
-                user.setPasswordHash(rs.getString("password_hash"));
-                user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-                user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                User user = mapResultSetToUser(rs);
 
                 return user;
             }
@@ -230,5 +203,20 @@ public class UserDAO implements IUserDAO {
         }
 
         return null;
+    }
+
+    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+        User user = new User(
+            UUID.fromString(rs.getString("id")),
+            rs.getString("name"),
+            rs.getString("lastname"),
+            rs.getString("email"),
+            rs.getString("password_hash"),
+            rs.getDate("birthday").toLocalDate(),
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at").toLocalDateTime()
+        );
+
+        return user;
     }
 }

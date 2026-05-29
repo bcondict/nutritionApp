@@ -45,9 +45,9 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
                 userMedicalCondition.setUpdatedAt(now);
             }
             
-            statement.setObject(1, userMedicalCondition.getId());
-            statement.setObject(2, userMedicalCondition.getUserId());
-            statement.setObject(3, userMedicalCondition.getMedicalConditionId());
+            statement.setString(1, userMedicalCondition.getId().toString());
+            statement.setString(2, userMedicalCondition.getUserId().toString());
+            statement.setString(3, userMedicalCondition.getMedicalConditionId().toString());
             statement.setString(4, userMedicalCondition.getSeverity().name());
             statement.setObject(5, userMedicalCondition.getDiagnosedAt());
             statement.setString(6, userMedicalCondition.getNotes());
@@ -70,7 +70,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -117,13 +117,13 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userMedicalCondition.getUserId());
-            statement.setObject(2, userMedicalCondition.getMedicalConditionId());
+            statement.setString(1, userMedicalCondition.getUserId().toString());
+            statement.setString(2, userMedicalCondition.getMedicalConditionId().toString());
             statement.setString(3, userMedicalCondition.getSeverity().name());
             statement.setObject(4, userMedicalCondition.getDiagnosedAt());
             statement.setString(5, userMedicalCondition.getNotes());
             statement.setObject(6, LocalDateTime.now());
-            statement.setObject(7, userMedicalCondition.getId());
+            statement.setString(7, userMedicalCondition.getId().toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -148,7 +148,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             int rowsAffected = statement.executeUpdate();
             
@@ -171,7 +171,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -196,7 +196,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.setString(2, severity.name());
             
             try (ResultSet rs = statement.executeQuery()) {
@@ -222,7 +222,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.setObject(2, date);
             
             try (ResultSet rs = statement.executeQuery()) {
@@ -248,7 +248,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.setObject(2, date);
             
             try (ResultSet rs = statement.executeQuery()) {
@@ -274,7 +274,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, medicalConditionId);
+            statement.setString(1, medicalConditionId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -299,7 +299,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, medicalConditionId);
+            statement.setString(1, medicalConditionId.toString());
             statement.setString(2, severity.name());
             
             try (ResultSet rs = statement.executeQuery()) {
@@ -325,8 +325,8 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
-            statement.setObject(2, medicalConditionId);
+            statement.setString(1, userId.toString());
+            statement.setString(2, medicalConditionId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -353,8 +353,8 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
-            statement.setObject(2, medicalConditionId);
+            statement.setString(1, userId.toString());
+            statement.setString(2, medicalConditionId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -378,7 +378,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, id);
+            statement.setString(1, id.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -402,8 +402,8 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
-            statement.setObject(2, medicalConditionId);
+            statement.setString(1, userId.toString());
+            statement.setString(2, medicalConditionId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -427,7 +427,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -451,7 +451,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, medicalConditionId);
+            statement.setString(1, medicalConditionId.toString());
             
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -499,7 +499,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
+            statement.setString(1, userId.toString());
             statement.executeUpdate();
             
         } catch (SQLException e) {
@@ -516,7 +516,7 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, medicalConditionId);
+            statement.setString(1, medicalConditionId.toString());
             statement.executeUpdate();
             
         } catch (SQLException e) {
@@ -533,8 +533,8 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setObject(1, userId);
-            statement.setObject(2, medicalConditionId);
+            statement.setString(1, userId.toString());
+            statement.setString(2, medicalConditionId.toString());
             statement.executeUpdate();
             
         } catch (SQLException e) {
@@ -645,30 +645,17 @@ public class UserMedicalConditionDAO implements IUserMedicalConditionDAO {
     
     // Método auxiliar para mapear ResultSet a UserMedicalCondition
     private UserMedicalCondition mapResultSetToUserMedicalCondition(ResultSet rs) throws SQLException {
-        UserMedicalCondition condition = new UserMedicalCondition();
-        
-        condition.setId((UUID) rs.getObject("id"));
-        condition.setUserId((UUID) rs.getObject("user_id"));
-        condition.setMedicalConditionId((UUID) rs.getObject("medical_condition_id"));
-        condition.setSeverity(MedicalConditionSeverity.valueOf(rs.getString("severity")));
-        condition.setNotes(rs.getString("notes"));
-        
-        // Manejo de LocalDateTime
-        Timestamp diagnosedAt = rs.getTimestamp("diagnosed_at");
-        if (diagnosedAt != null) {
-            condition.setDiagnosedAt(diagnosedAt.toLocalDateTime());
-        }
-        
-        Timestamp createdAt = rs.getTimestamp("created_at");
-        if (createdAt != null) {
-            condition.setCreatedAt(createdAt.toLocalDateTime());
-        }
-        
-        Timestamp updatedAt = rs.getTimestamp("updated_at");
-        if (updatedAt != null) {
-            condition.setUpdatedAt(updatedAt.toLocalDateTime());
-        }
-        
+        UserMedicalCondition condition = new UserMedicalCondition(
+            UUID.fromString(rs.getString("id")),
+            UUID.fromString(rs.getString("user_id")),
+            UUID.fromString(rs.getString("medical_condition_id")),
+            MedicalConditionSeverity.valueOf(rs.getString("severity")),
+            rs.getTimestamp("diagnosed_at").toLocalDateTime(),
+            rs.getString("notes"),
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at").toLocalDateTime()
+        );
+
         return condition;
     }
 }

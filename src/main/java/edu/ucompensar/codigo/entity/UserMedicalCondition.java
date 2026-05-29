@@ -15,24 +15,6 @@ public class UserMedicalCondition {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Constructor vacío
-    public UserMedicalCondition() {
-    }
-
-    // Constructor con parámetros principales
-    public UserMedicalCondition(
-        UUID userId,
-        UUID medicalConditionId,
-        MedicalConditionSeverity severity,
-        LocalDateTime diagnosedAt,
-        String notes
-    ) {
-        this.userId = userId;
-        this.medicalConditionId = medicalConditionId;
-        this.severity = severity;
-        this.diagnosedAt = diagnosedAt;
-        this.notes = notes;
-    }
 
     // Constructor completo
     public UserMedicalCondition(

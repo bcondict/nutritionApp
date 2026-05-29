@@ -13,17 +13,6 @@ public class WeeklyMenu {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Constructor vacío
-    public WeeklyMenu() {
-    }
-
-    // Constructor con parámetros principales
-    public WeeklyMenu(UUID nutritionPlanId, LocalDate weekStart, LocalDate weekEnd, LocalDateTime generatedAt) {
-        this.nutritionPlanId = nutritionPlanId;
-        this.weekStart = weekStart;
-        this.weekEnd = weekEnd;
-        this.generatedAt = generatedAt;
-    }
 
     // Constructor completo
     public WeeklyMenu(

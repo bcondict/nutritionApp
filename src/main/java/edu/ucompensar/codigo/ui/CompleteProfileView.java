@@ -1,5 +1,6 @@
 package edu.ucompensar.codigo.ui;
 
+import edu.ucompensar.codigo.entity.UserProfile;
 import edu.ucompensar.codigo.model.enums.ActivityLevel;
 import edu.ucompensar.codigo.model.enums.Sex;
 import edu.ucompensar.codigo.service.AuthService;
@@ -14,7 +15,7 @@ public class CompleteProfileView extends JFrame {
     private JComboBox<String> sexCombo;
     private JTextField weightField;
     private JTextField heightField;
-    private JComboBox<String> activityCombo;
+    private JComboBox<ActivityLevel> activityCombo;
     private JButton saveButton;
     private JButton skipButton;
     
@@ -80,7 +81,8 @@ public class CompleteProfileView extends JFrame {
         formPanel.add(new JLabel("Nivel de actividad:"), gbc);
         
         gbc.gridx = 1;
-        String[] activities = {"SEDENTARY", "LIGHT", "MODERATE", "ACTIVE", "VERY_ACTIVE"};
+        // ActivityLevel[] activities = {ActivityLevel.SEDENTARY, ActivityLevel.LIGHT, ActivityLevel.MODERATE, ActivityLevel.ACTIVE, ActivityLevel.VERY_ACTIVE};
+        ActivityLevel[] activities = ActivityLevel.values();
         activityCombo = new JComboBox<>(activities);
         formPanel.add(activityCombo, gbc);
         
@@ -109,10 +111,81 @@ public class CompleteProfileView extends JFrame {
     
     private void saveProfile() {
         try {
+            // Validar campos
+            if (weightField.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor ingrese su peso");
+                return;
+            }
+            
+            if (heightField.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor ingrese su altura");
+                return;
+            }
+            
+            Sex sex = Sex.valueOf(sexCombo.getSelectedItem().toString());
+            BigDecimal weight = new BigDecimal(weightField.getText());
+            Integer height = Integer.parseInt(heightField.getText());
+            ActivityLevel activity = ActivityLevel.valueOf(activityCombo.getSelectedItem().toString());
+            
+            // Validar valores
+            if (weight.compareTo(BigDecimal.ZERO) <= 0) {
+                JOptionPane.showMessageDialog(this, "El peso debe ser mayor a 0");
+                return;
+            }
+            
+            if (height <= 0) {
+                JOptionPane.showMessageDialog(this, "La altura debe ser mayor a 0");
+                return;
+            }
+            
+            if (weight.compareTo(new BigDecimal("300")) > 0) {
+                JOptionPane.showMessageDialog(this, "El peso parece demasiado alto. Verifique el valor.");
+                return;
+            }
+            
+            if (height > 300) {
+                JOptionPane.showMessageDialog(this, "La altura parece demasiado alta. Verifique el valor.");
+                return;
+            }
+            
+            // Buscar si ya existe un perfil para este usuario
+            UserProfile existingProfile = profileService.getLatestProfile(userId);
+            
+            LocalDateTime now = LocalDateTime.now();
+            
+            if (existingProfile == null) {
+                // Crear nuevo perfil
+                UserProfile newProfile = new UserProfile(UUID.randomUUID(), userId, weight, height, sex, activity, now, now, now);
+                profileService.save(newProfile);
+            } else {
+                // Actualizar perfil existente
+                existingProfile.setWeightKg(weight);
+                existingProfile.setHeightCm(height);
+                existingProfile.setSex(sex);
+                existingProfile.setActivityLevel(activity);
+                existingProfile.setMeasuredAt(now);
+                existingProfile.setUpdatedAt(now);
+                
+                profileService.update(existingProfile);
+            }
+            
+            JOptionPane.showMessageDialog(this, "Perfil guardado exitosamente");
+            openMainView();
+            
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos para peso y altura");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    private void saveProfile2() {
+        try {
             Sex sex = Sex.valueOf((String) sexCombo.getSelectedItem());
             BigDecimal weight = new BigDecimal(weightField.getText());
             Integer height = Integer.parseInt(heightField.getText());
-            ActivityLevel activity = ActivityLevel.valueOf((String) activityCombo.getSelectedItem());
+            ActivityLevel activity = (ActivityLevel) activityCombo.getSelectedItem();
             
             if (weight.compareTo(BigDecimal.ZERO) <= 0 || height <= 0) {
                 JOptionPane.showMessageDialog(this, "Peso y altura deben ser valores positivos");

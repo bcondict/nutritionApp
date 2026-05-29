@@ -31,27 +31,6 @@ public class Recipe {
     // public static final String DIFFICULTY_HARD = "HARD";
     // public static final String DIFFICULTY_EXPERT = "EXPERT";
 
-    // Constructor vacío
-    public Recipe() {
-    }
-
-    // Constructor con parámetros principales
-    public Recipe(
-        String name,
-        String description,
-        MealType mealType,
-        Integer prepTimeMinutes,
-        RecipeDifficulty difficulty,
-        Integer servings
-    ) {
-        this.name = name;
-        this.description = description;
-        this.mealType = mealType;
-        this.prepTimeMinutes = prepTimeMinutes;
-        this.difficulty = difficulty;
-        this.servings = servings;
-    }
-
     // Constructor completo
     public Recipe(
         UUID id,

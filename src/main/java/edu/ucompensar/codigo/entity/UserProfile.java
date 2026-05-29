@@ -19,26 +19,6 @@ public class UserProfile {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Constructor vacío
-    public UserProfile() {
-    }
-
-    // Constructor con parámetros principales
-    public UserProfile(
-        UUID userId,
-        BigDecimal weightKg,
-        Integer heightCm,
-        Sex sex,
-        ActivityLevel activityLevel,
-        LocalDateTime measuredAt
-    ) {
-        this.userId = userId;
-        this.weightKg = weightKg;
-        this.heightCm = heightCm;
-        this.sex = sex;
-        this.activityLevel = activityLevel;
-        this.measuredAt = measuredAt;
-    }
 
     // Constructor completo
     public UserProfile(

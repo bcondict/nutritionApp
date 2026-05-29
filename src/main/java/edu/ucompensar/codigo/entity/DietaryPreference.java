@@ -16,18 +16,6 @@ public class DietaryPreference {
     private LocalDateTime updatedAt;
 
 
-    // Constructor vacío
-    public DietaryPreference() {
-    }
-
-    // Constructor con parámetros principales
-    public DietaryPreference(DietaryPreferenceCode code, String label, DietaryPreferenceCategory category, String description) {
-        this.code = code;
-        this.label = label;
-        this.category = category;
-        this.description = description;
-    }
-
     // Constructor completo
     public DietaryPreference(
         UUID id,
