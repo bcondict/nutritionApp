@@ -3,7 +3,6 @@ package edu.ucompensar.codigo.ui;
 import edu.ucompensar.codigo.entity.UserProfile;
 import edu.ucompensar.codigo.model.enums.ActivityLevel;
 import edu.ucompensar.codigo.model.enums.Sex;
-import edu.ucompensar.codigo.service.AuthService;
 import edu.ucompensar.codigo.service.UserProfileService;
 import javax.swing.*;
 import java.awt.*;
@@ -20,12 +19,10 @@ public class CompleteProfileView extends JFrame {
     private JButton skipButton;
     
     private final UUID userId;
-    private final AuthService authService;
     private final UserProfileService profileService;
 
     public CompleteProfileView(UUID userId) {
         this.userId = userId;
-        this.authService = new AuthService();
         this.profileService = new UserProfileService();
         
         setTitle("Completar Perfil");
@@ -180,30 +177,6 @@ public class CompleteProfileView extends JFrame {
         }
     }
 
-    private void saveProfile2() {
-        try {
-            Sex sex = Sex.valueOf((String) sexCombo.getSelectedItem());
-            BigDecimal weight = new BigDecimal(weightField.getText());
-            Integer height = Integer.parseInt(heightField.getText());
-            ActivityLevel activity = (ActivityLevel) activityCombo.getSelectedItem();
-            
-            if (weight.compareTo(BigDecimal.ZERO) <= 0 || height <= 0) {
-                JOptionPane.showMessageDialog(this, "Peso y altura deben ser valores positivos");
-                return;
-            }
-            
-            profileService.saveOrUpdate(userId, weight, height, sex, activity, LocalDateTime.now());
-            
-            JOptionPane.showMessageDialog(this, "Perfil guardado exitosamente");
-            openMainView();
-            
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al guardar: " + ex.getMessage());
-        }
-    }
-    
     private void openMainView() {
         dispose();
         MainView mainView = new MainView(userId);
