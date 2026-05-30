@@ -73,7 +73,9 @@ public class DailyDietView extends JPanel {
         mealsPanel.add(breakfastPanel);
         mealsPanel.add(lunchPanel);
         mealsPanel.add(dinnerPanel);
+        // System.out.println("Cantidad actual: " + snacksPanel.getComponentCount());
         mealsPanel.add(snacksPanel);
+        // System.out.println("Cantidad después: " + snacksPanel.getComponentCount());
 
         add(mealsPanel, BorderLayout.CENTER);
 

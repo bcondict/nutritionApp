@@ -122,7 +122,7 @@ public class LoginView extends JFrame {
             JOptionPane.showMessageDialog(this, "Login exitoso");
             User user = SessionManager.getCurrentUser();
 
-            System.out.println(user.getName());
+            // System.out.println(user.getName());
             dispose();
 
             MainView mw = new MainView(user.getId());
